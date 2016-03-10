@@ -1,7 +1,9 @@
 # udacity
 My work for Udacity courses
 
-In my '/udacity/.git/config' file I had to change:
+The location of this folder is `/home/training/udacity`
+
+In my `/udacity/.git/config` file I had to change:
 ```
 [remote "origin"]
 	fetch = +refs/heads/*:refs/remotes/origin/*
