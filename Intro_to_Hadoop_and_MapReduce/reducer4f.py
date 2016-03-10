@@ -3,6 +3,14 @@
 # Value that starts with A will be the user data
 # Values that start with B will be forum node data
 
+'''
+FROM forum_node: 0,1,2,3, 5,6,7,8,9
+    "id"	"B" "title"	"tagnames"	"author_id"	"node_type"	"parent_id"	"abs_parent_id"	"added_at"	"score"
+
+FROM forum_users:
+    "user_ptr_id"	"A" "reputation"	"gold"	"silver"	"bronze"
+'''
+
 import sys
 import csv
 
@@ -22,7 +30,7 @@ def reducer():
             continue
             
         # posts by the user
-        writer.writerow(data+user[2:])
+        writer.writerow(data[0:1]+data[2:]+user[2:])
         
         
 if __name__=='__main__':

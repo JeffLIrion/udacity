@@ -6,6 +6,7 @@ In relational algebra, this is known as a join operation.
 At the moment, this is not an auto-gradable exercise, but instructions below are given on how to test your code on your machine. 
 
 The goal is to have the output from the reducer with the following fields for each forum post: 
+
 "id"  "title"  "tagnames"  "author_id"  "node_type"  "parent_id"  "abs_parent_id"  "added_at" 
 "score"  "reputation"  "gold"  "silver"  "bronze"
 
