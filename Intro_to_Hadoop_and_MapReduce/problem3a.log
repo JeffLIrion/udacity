@@ -1,0 +1,69 @@
+Script started on Thu 10 Mar 2016 02:00:00 AM EST
+]0;training@localhost:~/udacity[?1034h[training@localhost udacity]$ cd ../udacity_training/code
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ hs mapper.py reducer.py myinput problem3a
+packageJobJar: [mapper.py, reducer.py, /tmp/hadoop-training/hadoop-unjar2424191782727096842/] [] /tmp/streamjob5715427097485488541.jar tmpDir=null
+16/03/10 02:00:53 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+16/03/10 02:00:53 WARN snappy.LoadSnappy: Snappy native library is available
+16/03/10 02:00:53 INFO snappy.LoadSnappy: Snappy native library loaded
+16/03/10 02:00:53 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/03/10 02:00:53 INFO streaming.StreamJob: getLocalDirs(): [/var/lib/hadoop-hdfs/cache/training/mapred/local]
+16/03/10 02:00:53 INFO streaming.StreamJob: Running job: job_201603092108_0001
+16/03/10 02:00:53 INFO streaming.StreamJob: To kill this job, run:
+16/03/10 02:00:53 INFO streaming.StreamJob: UNDEF/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_201603092108_0001
+16/03/10 02:00:53 INFO streaming.StreamJob: Tracking URL: http://0.0.0.0:50030/jobdetails.jsp?jobid=job_201603092108_0001
+16/03/10 02:00:54 INFO streaming.StreamJob:  map 0%  reduce 0%
+16/03/10 02:01:04 INFO streaming.StreamJob:  map 20%  reduce 0%
+16/03/10 02:01:07 INFO streaming.StreamJob:  map 31%  reduce 0%
+16/03/10 02:01:10 INFO streaming.StreamJob:  map 41%  reduce 0%
+16/03/10 02:01:13 INFO streaming.StreamJob:  map 50%  reduce 0%
+16/03/10 02:01:26 INFO streaming.StreamJob:  map 81%  reduce 17%
+16/03/10 02:01:29 INFO streaming.StreamJob:  map 91%  reduce 25%
+16/03/10 02:01:32 INFO streaming.StreamJob:  map 100%  reduce 25%
+16/03/10 02:01:38 INFO streaming.StreamJob:  map 100%  reduce 72%
+16/03/10 02:01:42 INFO streaming.StreamJob:  map 100%  reduce 80%
+16/03/10 02:01:45 INFO streaming.StreamJob:  map 100%  reduce 89%
+16/03/10 02:01:48 INFO streaming.StreamJob:  map 100%  reduce 99%
+16/03/10 02:01:49 INFO streaming.StreamJob:  map 100%  reduce 100%
+16/03/10 02:01:51 INFO streaming.StreamJob: Job complete: job_201603092108_0001
+16/03/10 02:01:51 INFO streaming.StreamJob: Output: problem3a
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ ha[K[K# see the dire[K[K[K[K[K HDFS
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ hadoop fs -ls
+Found 2 items
+drwxr-xr-x   - training supergroup          0 2016-03-09 23:03 myinput
+drwxr-xr-x   - training supergroup          0 2016-03-10 02:01 problem3a
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ hadoop fs -ls problem3a
+Found 3 items
+-rw-r--r--   1 training supergroup          0 2016-03-10 02:01 problem3a/_SUCCESS
+drwxr-xr-x   - training supergroup          0 2016-03-10 02:00 problem3a/_logs
+-rw-r--r--   1 training supergroup       2296 2016-03-10 02:01 problem3a/part-00000
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ # view the results
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ hadoop fs -cat problem3a/part-00000 | less
+[?1049h[?1h=Albuquerque     10052311.42
+Anaheim         10076416.36
+Anchorage       9933500.4
+Arlington       10072207.97
+Atlanta         9997146.7
+Aurora  9992970.92
+Austin  10057158.9
+Bakersfield     10031208.92
+Baltimore       10096521.45
+Baton Rouge     10131273.23
+Birmingham      10076606.52
+Boise   10039166.74
+Boston  10039473.28
+Buffalo         10001941.19
+Chandler        9919559.86
+Charlotte       10112531.34
+Chesapeake      10038504.92
+Chicago         10062522.07
+Chula Vista     9974951.34
+Cincinnati      10139505.74
+Cleveland       10067835.84
+Colorado Springs        10061105.87
+Columbus        10035241.03
+:[K[K[?1l>[?1049l]0;training@localhost:~/udacity_training/code[training@localhost code]$ # rer[Ktrieve the results
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ hadooop f[K[K[K[Kp fs -get problem3a/part-00000 problem3a.txt
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ exit
+exit
+
+Script done on Thu 10 Mar 2016 02:06:54 AM EST
