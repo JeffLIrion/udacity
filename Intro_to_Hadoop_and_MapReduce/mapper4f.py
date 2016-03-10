@@ -8,7 +8,14 @@ At the moment, this is not an auto-gradable exercise, but instructions below are
 The goal is to have the output from the reducer with the following fields for each forum post: 
 "id"  "title"  "tagnames"  "author_id"  "node_type"  "parent_id"  "abs_parent_id"  "added_at" 
 "score"  "reputation"  "gold"  "silver"  "bronze"
- 
+
+FROM forum_node: 0,1,2,3, 5,6,7,8,9
+    "id"	"title"	"tagnames"	"author_id"	"BODY"	"node_type"	"parent_id"	"abs_parent_id"	"added_at"	
+    "score"
+
+FROM forum_users:
+    "user_ptr_id"	"reputation"	"gold"	"silver"	"bronze"
+
 Note that for each post we have taken some of the information describing the post, 
 and joined it with user information. The body of the post is not included in the final output. 
 The reason is that it is difficult to handle a multiline body, as it might be split on separate 
@@ -43,8 +50,15 @@ def mapper():
     writer = csv.writer(sys.stdout, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
 
     for line in reader:
-
-        # YOUR CODE HERE
+        # user data
+        if len(line)==5:
+            if line[0] != 'user_ptr_id':
+                writer.writerow(line[0:1]+['A']+line[1:])
             
-        writer.writerow(line)
+        # post data
+        else:
+            if line[0] != 'id':
+                writer.writerow(line[0:1]+['B']+line[1:4]+line[5:10])
         
+if __name__=='__main__':
+    mapper()
