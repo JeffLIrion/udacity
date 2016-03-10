@@ -1,0 +1,42 @@
+Script started on Thu 10 Mar 2016 05:09:25 AM EST
+]0;training@localhost:~/udacity/Intro_to_Hadoop_and_MapReduce[?1034h[training@localhost Intro_to_Hadoop_and_MapReduce]$ s[Khs mapper3b.py reducer3b.py  myinput problem3b
+packageJobJar: [mapper3b.py, reducer3b.py, /tmp/hadoop-training/hadoop-unjar208817485658110885/] [] /tmp/streamjob1087905385028967445.jar tmpDir=null
+16/03/10 05:09:45 WARN mapred.JobClient: Use GenericOptionsParser for parsing the arguments. Applications should implement Tool for the same.
+16/03/10 05:09:45 WARN snappy.LoadSnappy: Snappy native library is available
+16/03/10 05:09:45 INFO snappy.LoadSnappy: Snappy native library loaded
+16/03/10 05:09:45 INFO mapred.FileInputFormat: Total input paths to process : 1
+16/03/10 05:09:45 INFO streaming.StreamJob: getLocalDirs(): [/var/lib/hadoop-hdfs/cache/training/mapred/local]
+16/03/10 05:09:45 INFO streaming.StreamJob: Running job: job_201603100413_0008
+16/03/10 05:09:45 INFO streaming.StreamJob: To kill this job, run:
+16/03/10 05:09:45 INFO streaming.StreamJob: UNDEF/bin/hadoop job  -Dmapred.job.tracker=0.0.0.0:8021 -kill job_201603100413_0008
+16/03/10 05:09:45 INFO streaming.StreamJob: Tracking URL: http://0.0.0.0:50030/jobdetails.jsp?jobid=job_201603100413_0008
+16/03/10 05:09:46 INFO streaming.StreamJob:  map 0%  reduce 0%
+16/03/10 05:09:56 INFO streaming.StreamJob:  map 18%  reduce 0%
+16/03/10 05:09:59 INFO streaming.StreamJob:  map 29%  reduce 0%
+16/03/10 05:10:02 INFO streaming.StreamJob:  map 40%  reduce 0%
+16/03/10 05:10:05 INFO streaming.StreamJob:  map 50%  reduce 0%
+16/03/10 05:10:16 INFO streaming.StreamJob:  map 75%  reduce 0%
+16/03/10 05:10:18 INFO streaming.StreamJob:  map 85%  reduce 25%
+16/03/10 05:10:21 INFO streaming.StreamJob:  map 96%  reduce 25%
+16/03/10 05:10:23 INFO streaming.StreamJob:  map 100%  reduce 25%
+16/03/10 05:10:27 INFO streaming.StreamJob:  map 100%  reduce 68%
+16/03/10 05:10:30 INFO streaming.StreamJob:  map 100%  reduce 76%
+16/03/10 05:10:33 INFO streaming.StreamJob:  map 100%  reduce 85%
+16/03/10 05:10:36 INFO streaming.StreamJob:  map 100%  reduce 92%
+16/03/10 05:10:39 INFO streaming.StreamJob:  map 100%  reduce 100%
+16/03/10 05:10:41 INFO streaming.StreamJob: Job complete: job_201603100413_0008
+16/03/10 05:10:41 INFO streaming.StreamJob: Output: problem3b
+]0;training@localhost:~/udacity/Intro_to_Hadoop_and_MapReduce[training@localhost Intro_to_Hadoop_and_MapReduce]$ hadoop fs -get problem3b [K/par t-00000 problem3b.txt
+get: `problem3b.txt': File exists
+]0;training@localhost:~/udacity/Intro_to_Hadoop_and_MapReduce[training@localhost Intro_to_Hadoop_and_MapReduce]$ ls -f
+reducer3b.py   example.log   .              reducer3c.py~        mapper3b.py
+testfile       reducer3c.py  problem3b.log  mapper3a.py          ..
+problem3a.txt  reducer3a.py  mapper3b.py~   setup_purchases.log  mapper3c.py
+problem3b.txt  example.txt   problem3a.log  reducer3b.py~
+]0;training@localhost:~/udacity/Intro_to_Hadoop_and_MapReduce[training@localhost Intro_to_Hadoop_and_MapReduce]$ rm problem3b.txt
+rm: remove regular empty file `problem3b.txt'? y
+]0;training@localhost:~/udacity/Intro_to_Hadoop_and_MapReduce[training@localhost Intro_to_Hadoop_and_MapReduce]$ rm problem3b.txtls -f[Khadoop fs -get problem3b/partt-00000 problem3b.txt
+]0;training@localhost:~/udacity/Intro_to_Hadoop_and_MapReduce[training@localhost Intro_to_Hadoop_and_MapReduce]$ exit
+exit
+
+Script done on Thu 10 Mar 2016 05:14:07 AM EST
