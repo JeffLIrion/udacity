@@ -17,7 +17,7 @@ for line in sys.stdin:
     # same word --> add to the count
     if old_word and old_word == data[0]:
         count += 1
-        id_set.add(data[1].strip('"'))
+        id_set.add(data[1])
         
     # new word
     else:

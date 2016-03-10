@@ -12,5 +12,5 @@ for line in reader:
     words = re.split('\s*[,.!?:;"()<>\[\]#$=\-/\s]+\s*',line[4].lstrip().lower()+' ')
     #print words
     for word in words[:-1]:
-        writer.writerow([word, line[0]])
-        #print word, '\t', line[0]
+        #writer.writerow([word, line[0]])
+        print word, '\t', line[0]
