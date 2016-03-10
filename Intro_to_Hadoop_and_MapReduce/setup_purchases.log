@@ -1,0 +1,121 @@
+Script started on Wed 09 Mar 2016 10:57:38 PM EST
+]0;training@localhost:~/udacity[?1034h[training@localhost udacity]$ cd ~/udacity[K[K[K[K[K[K[K[K/[K[K../udacity_training
+]0;training@localhost:~/udacity_training[training@localhost udacity_training]$ hadoop fs [K[K[K[K[K[K[K[K[K[K# see the files in the [K[K[K[KHDFS
+]0;training@localhost:~/udacity_training[training@localhost udacity_training]$ hadoop fs -ls
+]0;training@localhost:~/udacity_training[training@localhost udacity_training]$ hadoop[K[K[K[K[K[K# upload the purchase data
+]0;training@localhost:~/udacity_training[training@localhost udacity_training]$ cd data
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ hadoop fs -put purchases.txt 
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ # make the myinput directory
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ hadoop fs -mv purchases.txt myinput/.myinput//myinput/[C[C[C[C[C[C[C[Cpurchases.txt
+mv: `./myinput/purchases.txt': No such file or directory
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ hadoop fs -ls
+Found 1 items
+-rw-r--r--   1 training supergroup  211312924 2016-03-09 23:00 purchases.txt
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ hadoop fs -m purchases.txt [K[K[K[K[K[K[K[K[K[K[K[K[K[K[Kkdir myinput
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ hadoop fs -mv p[K[K[K[K[K[K[K[K[K[K[K[K[K[K[Khadoop fs -mkdir myinputls[Kmv purchases.txt ./myinput/purchases.txt
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ hadoop fs -ls
+Found 1 items
+drwxr-xr-x   - training supergroup          0 2016-03-09 23:03 myinput
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ hadoop fs -cd myinput
+-cd: Unknown command
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ hadoop fs -ls myinput
+Found 1 items
+-rw-r--r--   1 training supergroup  211312924 2016-03-09 23:00 myinput/purchases.txt
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ # make a testfile
+]0;training@localhost:~/udacity_training/data[training@localhost data]$ cd ../code
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ head -5-[K0  ../data/purchases.txt > textfile[K[K[K[K[K[Kstfile
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ # tet [K[Kst mapper.py
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ cat testfile | ./maper[K[Kper.py 
+San Jose	214.05
+Fort Worth	153.57
+San Diego	66.08
+Pittsburgh	493.51
+Omaha	235.63
+Stockton	247.18
+Austin	379.6
+New York	296.8
+Corpus Christi	25.38
+Fort Worth	213.88
+Las Vegas	53.26
+Newark	39.75
+Austin	469.63
+Greensboro	290.82
+San Francisco	260.65
+Lincoln	136.9
+Buffalo	483.82
+San Jose	215.82
+Boston	418.94
+Houston	309.16
+Las Vegas	93.39
+Virginia Beach	376.11
+Riverside	252.88
+Tulsa	205.06
+Reno	88.25
+Chicago	31.08
+Fort Wayne	370.55
+San Bernardino	170.2
+Madison	16.78
+Austin	327.75
+Portland	108.69
+Riverside	15.41
+Reno	80.46
+Anchorage	298.86
+Pittsburgh	475.26
+Spokane	3.85
+Spokane	287.65
+Fresno	466.64
+Omaha	255.68
+Anchorage	6.38
+Aurora	117.81
+Philadelphia	351.31
+Fremont	222.61
+Anchorage	22.36
+Norfolk	189.01
+Chandler	414.08
+Minneapolis	182.05
+Honolulu	345.18
+Indianapolis	135.96
+Chandler	344.09
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ # test the pipeline[K[K[K[K[K[K[K[Kmapper & reducer pipeline
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ cat testfile |.[K ./mapper.py | sort | ./reducer.py 
+Anchorage 	327.6
+Aurora 	117.81
+Austin 	1176.98
+Boston 	418.94
+Buffalo 	483.82
+Chandler 	758.17
+Chicago 	31.08
+Corpus Christi 	25.38
+Fort Wayne 	370.55
+Fort Worth 	367.45
+Fremont 	222.61
+Fresno 	466.64
+Greensboro 	290.82
+Honolulu 	345.18
+Houston 	309.16
+Indianapolis 	135.96
+Las Vegas 	146.65
+Lincoln 	136.9
+Madison 	16.78
+Minneapolis 	182.05
+Newark 	39.75
+New York 	296.8
+Norfolk 	189.01
+Omaha 	491.31
+Philadelphia 	351.31
+Pittsburgh 	968.77
+Portland 	108.69
+Reno 	168.71
+Riverside 	268.29
+San Bernardino 	170.2
+San Diego 	66.08
+San Francisco 	260.65
+San Jose 	429.87
+Spokane 	291.5
+Stockton 	247.18
+Tulsa 	205.06
+Virginia Beach 	376.11
+]0;training@localhost:~/udacity_training/code[training@localhost code]$ exit
+exit
+
+Script done on Wed 09 Mar 2016 11:09:10 PM EST

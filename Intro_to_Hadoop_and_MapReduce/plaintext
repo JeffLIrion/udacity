@@ -1,7 +1,0 @@
-# for converting typescript to text
-#     USAGE:
-#         script session.log
-#         <commands in terminal>
-#         exit
-#         cat session.log | plaintext > session.txt
-alias plaintext="perl -pe 's/\e([^\[\]]|\[.*?[a-zA-Z]|\].*?\a)//g' | col -b"
