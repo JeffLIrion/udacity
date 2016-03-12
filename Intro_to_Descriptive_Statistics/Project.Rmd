@@ -1,0 +1,128 @@
+---
+title: "Project for Intro to Descriptive Statistics"
+author: "Jeff Irion"
+date: "March 11, 2016"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, include=FALSE}
+rm(list=ls())
+setwd("C:/Users/Jeff/udacity/Intro_to_Descriptive_Statistics/")
+```
+
+### Questions for Investigation
+
+This experiment will require the use of a standard deck of playing cards. This is a deck of fifty-two cards divided into four suits (spades (&spades;), hearts (&hearts;), diamonds (&diams;), and clubs (&clubs;)), each suit containing thirteen cards (Ace, numbers 2-10, and face cards Jack, Queen, and King). You can use either a physical deck of cards for this experiment or you may use a virtual deck of cards such as that found on random.org (http://www.random.org/playing-cards/).
+
+For the purposes of this task, assign each card a value: The Ace takes a value of 1, numbered cards take the value printed on the card, and the Jack, Queen, and King each take a value of 10.
+
+1. First, create a histogram depicting the relative frequencies of the card values.
+2. Now, we will get samples for a new distribution. To obtain a single sample, shuffle your deck of cards and draw three cards from it. (You will be sampling from the deck without replacement.) Record the cards that you have drawn and the sum of the three cards' values. Repeat this sampling procedure a total of at least thirty times.
+3. Let's take a look at the distribution of the card sums. Report descriptive statistics for the samples you have drawn. Include at least two measures of central tendency and two measures of variability.
+4. Create a histogram of the sampled card sums you have recorded. Compare its shape to that of the original distribution. How are they different, and can you explain why this is the case?
+5. Make some estimates about values you will get on future draws. Within what range will you expect approximately 90% of your draw values to fall? What is the approximate probability that you will get a draw value of at least 20? Make sure you justify how you obtained your values.
+
+
+
+### 1. Histogram of card values
+
+```{r, messages=FALSE, warning=FALSE}
+library(ggplot2)
+library(magrittr)
+
+# make the deck
+faces <- c("Ace", as.character(seq(2,10)), "Jack", "Queen", "King")
+
+values <- rep( c(seq(1,9), rep(10,4)), 4)
+
+deck <- data.frame(cards=c(paste0(faces," of spades"), paste0(faces," of hearts"), paste0(faces," of diamonds"), paste0(faces," of clubs")), values=rep( c(seq(1,9), rep(10,4)), 4), stringsAsFactors=FALSE)
+
+
+# make the histogram
+ggplot(deck, aes(x=values)) + 
+  geom_histogram(binwidth=1, origin=-0.5, col="red", fill="royalblue", alpha=0.5) + 
+  labs(x="Value", y="Count", title="Card Value Histogram") +
+  scale_x_continuous(breaks = seq(1,10), limits=c(0.5,10.5)) +
+  scale_y_continuous(breaks = seq(0,16,4))
+```
+
+
+
+### 2. Repeatedly Sample the Deck
+
+```{r}
+# the number of cards to pick
+m <- 3
+
+# the number of times to sample the deck
+n <- 10000
+
+# initialize the data frame
+samples <- data.frame(matrix(nrow=n, ncol=m+1))
+colnames(samples) <- c(paste0("card", seq(1:m)), "sum")
+
+# sample the deck n times, drawing m cards
+set.seed(1)
+for(s in seq(1,n)){
+  pick_m <- sample(52,m)
+  samples[s,1:m] <- deck$cards[pick_m]
+  samples$sum[s] <-sum(deck$values[pick_m])
+}
+write.csv(samples,"samples.csv")
+```
+
+
+
+### 3. Descriptive Statistics for the Distribution
+
+```{r, include=FALSE}
+# define a function for finding the mode
+# http://stackoverflow.com/questions/2547402/is-there-a-built-in-function-for-finding-the-mode
+Mode <- function(x) {
+  ux <- unique(x)
+  ux[which.max(tabulate(match(x, ux)))]
+}
+
+# calculate sample statistics
+my_mean <- mean(samples$sum)
+my_median <- median(samples$sum)
+my_mode <- Mode(samples$sum)
+my_IQR <- IQR(samples$sum)
+my_var <- var(samples$sum)
+my_sd <- sd(samples$sum)
+```
+
+| Measures of central tendency |
+|------------------------------|
+| Mean:   `r I(my_mean)`       |
+| Median: `r I(my_median)`     |
+| Mode:   `r I(my_mode)`       |
+
+| Measures of variation             |
+|-----------------------------------|
+| IQR:                `r I(my_IQR)` |
+| Variance:           `r I(my_var)` |
+| Standard Deviation: `r I(my_sd)`  |
+
+
+
+### 4. Histogram of the Sampled Cards
+
+```{r, warning=FALSE}
+# make the histogram
+ggplot(samples, aes(x=sum)) + 
+  geom_histogram(binwidth=1, col="red", fill="royalblue", alpha=0.5) + 
+  labs(x="Sum of 3 Cards", y="Count", title=sprintf("3 Card Sum Histogram (n = %d)",n)) +
+  scale_x_continuous(breaks = seq(3,30,3), limits=c(3,30))
+```
+
+
+
+### 5. Estimates about Future Draws
+
+* Within what range will you expect approximately 90% of your draw values to fall?
+    * 90% of the draw values should fall within the 5th percentile and the 95th percentile.  The z-scores that correspond to these percentiles are `r I(round(qnorm(0.05), 3))` and `r I(round(qnorm(0.95), 3))`, respectively.  For our estimated mean of `r I(round(my_mean,2))` and our estimated standard deviation of `r I(round(my_sd, 2))`, these z-scores correspond to `r I(round(qnorm(0.05, my_mean, my_sd), 2))` and `r I(round(qnorm(0.95, my_mean, my_sd), 2))`.  Therefore, we expect approximately 90% of the draw values to fall in the range **(`r I(round(qnorm(0.05, my_mean, my_sd), 2))`, `r I(round(qnorm(0.95, my_mean, my_sd), 2))`)**.  
+* What is the approximate probability that you will get a draw value of at least 20?
+    * Using our estimated mean and standard deviation, 20 corresponds to a z-score of `r I(round((20-my_mean)/my_sd, 3))`.  Using this, we find that the probability that the draw value will be less than 20 is `r I(round(pnorm(20, mean=my_mean, sd=my_sd), 3))`.  Therefore, the probability that the draw value will be at least 20 is **`r I(round(1-pnorm(20, mean=my_mean, sd=my_sd), 3))`**.  
