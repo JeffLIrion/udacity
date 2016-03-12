@@ -93,7 +93,6 @@ img {
 <div id="histogram-of-card-values" class="section level3">
 <h3>1. Histogram of card values</h3>
 <pre class="r"><code>library(ggplot2)
-library(magrittr)
 
 # make the deck
 faces &lt;- c(&quot;Ace&quot;, as.character(seq(2,10)), &quot;Jack&quot;, &quot;Queen&quot;, &quot;King&quot;)
@@ -130,6 +129,8 @@ for(s in seq(1,n)){
   samples[s,1:m] &lt;- deck$cards[pick_m]
   samples$sum[s] &lt;-sum(deck$values[pick_m])
 }
+
+# save the 
 write.csv(samples,&quot;samples.csv&quot;)</code></pre>
 </div>
 <div id="descriptive-statistics-for-the-distribution" class="section level3">

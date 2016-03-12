@@ -30,7 +30,6 @@ For the purposes of this task, assign each card a value: The Ace takes a value o
 
 ```{r, messages=FALSE, warning=FALSE}
 library(ggplot2)
-library(magrittr)
 
 # make the deck
 faces <- c("Ace", as.character(seq(2,10)), "Jack", "Queen", "King")
@@ -70,6 +69,8 @@ for(s in seq(1,n)){
   samples[s,1:m] <- deck$cards[pick_m]
   samples$sum[s] <-sum(deck$values[pick_m])
 }
+
+# save the 
 write.csv(samples,"samples.csv")
 ```
 
