@@ -4,3 +4,8 @@ README.md~
 *.Rhistory
 Data_Analysis_with_R/pseudo_facebook.tsv
 *.ipynb_checkpoints
+Intro_to_Data_Analysis/daily_engagement.csv
+Intro_to_Data_Analysis/enrollments.csv
+Intro_to_Data_Analysis/project_submissions.csv
+Intro_to_Data_Analysis/daily_engagement_full.csv
+Intro_to_Data_Analysis/table_descriptions.txt

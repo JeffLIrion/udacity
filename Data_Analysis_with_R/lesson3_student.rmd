@@ -133,7 +133,9 @@ qplot(x = friend_count, data = pf, binwidth = 10) +
 Notes:
 
 ```{r Omitting NA Values}
-
+qplot(x = friend_count, data = subset(pf, !is.na(gender)), binwidth = 10) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+  facet_wrap(~gender)
 ```
 
 ***
@@ -142,7 +144,8 @@ Notes:
 Notes:
 
 ```{r Statistics \'by\' Gender}
-
+table(pf$gender)
+by(pf$friend_count, pf$gender, summary)
 ```
 
 #### Who on average has more friends: men or women?
@@ -160,7 +163,7 @@ Response:
 Notes:
 
 ```{r Tenure}
-
+qplot(x=tenure, data=pf, binwidth=30, color=I('black'), fill=I('#099DD9'))
 ```
 
 ***
@@ -168,7 +171,8 @@ Notes:
 #### How would you create a histogram of tenure by year?
 
 ```{r Tenure Histogram by Year}
-
+qplot(x=tenure/365, data=pf, binwidth=0.25, color=I('black'), fill=I('#F79240')) + 
+  scale_x_continuous(breaks=seq(1,7), limits=c(0,7))
 ```
 
 ***
@@ -177,7 +181,8 @@ Notes:
 Notes:
 
 ```{r Labeling Plots}
-
+qplot(x=tenure/365, data=pf, xlab = 'Number of years using Facebook', ylab='Number of users in sample', binwidth=0.25, color=I('black'), fill=I('#F79240')) + 
+  scale_x_continuous(breaks=seq(1,7), limits=c(0,7))
 ```
 
 ***
@@ -186,7 +191,8 @@ Notes:
 Notes:
 
 ```{r User Ages}
-
+qplot(data=pf, x=age, xlab="Age", ylab="Frequency", binwidth=1, color=I('black'), fill=I('#5760AB')) + 
+  scale_x_continuous(breaks=c(min(pf$age), max(pf$age)))
 ```
 
 #### What do you notice?
