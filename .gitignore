@@ -3,3 +3,4 @@ README.md~
 *.py~
 *.Rhistory
 Data_Analysis_with_R/pseudo_facebook.tsv
+*.ipynb_checkpoints

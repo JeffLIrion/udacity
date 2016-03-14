@@ -92,9 +92,10 @@ Notes:
 
 #### What code would you enter to create a histogram of friend counts?
 
-```{r Friend Count}
+```{r Friend Count, warning=FALSE}
 ggplot(data=pf, aes(x=friend_count)) +
-  geom_histogram(bins=60)
+  geom_histogram(bins=30) +
+  scale_x_continuous(limits=c(0,1000))
 ```
 
 #### How is this plot similar to Moira's first plot?
@@ -122,8 +123,8 @@ Notes:
 # What code would you add to create a facet the histogram by gender?
 # Add it to the code below.
 qplot(x = friend_count, data = pf, binwidth = 10) +
-  scale_x_continuous(limits = c(0, 1000),
-                     breaks = seq(0, 1000, 50))
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50)) +
+  facet_wrap(~gender)
 ```
 
 ***
