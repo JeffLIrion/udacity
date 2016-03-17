@@ -12,6 +12,8 @@ Notes:
 Notes:
 
 ```{r Pseudo-Facebook User Data}
+library(ggplot2)
+library(gridExtra)
 setwd('C:/Users/Jeff/udacity/Data_Analysis_with_R')
 pf <- read.csv('pseudo_facebook.tsv', sep='\t')
 ```
@@ -219,7 +221,11 @@ Notes:
 Notes:
 
 ```{r Add a Scaling Layer}
-
+library(gridExtra)
+p1 = qplot(data=pf, x=friend_count, xlab="Friend Count", ylab="Frequency", main="Friend Count Histogram", color=I('black'), fill=I('#5760AB'))
+p2 = qplot(data=pf, x=friend_count, xlab="Friend Count", ylab="Frequency", main="Friend Count Histogram (log10)", color=I('black'), fill=I('#5760AB')) + scale_x_log10()
+p3 = qplot(data=pf, x=friend_count, xlab="Friend Count", ylab="Frequency", main="Friend Count Histogram (sqrt)", color=I('black'), fill=I('#5760AB')) + scale_x_sqrt()
+grid.arrange(p1,p2,p3, ncol=1)
 ```
 
 ***
@@ -228,7 +234,8 @@ Notes:
 ### Frequency Polygons
 
 ```{r Frequency Polygons}
-
+qplot(x = friend_count, y = ..count../sum(..count..), ylab="Proportion of Users with Friend Count", data = subset(pf, !is.na(gender)), binwidth = 10, geom="freqpoly", color=gender) +
+  scale_x_continuous(limits = c(0, 1000), breaks = seq(0, 1000, 50))
 ```
 
 ***
