@@ -2,8 +2,10 @@ README.md~
 .gitignore~
 *.py~
 *.Rhistory
-Data_Analysis_with_R/pseudo_facebook.tsv
 *.ipynb_checkpoints
+
+Data_Analysis_with_R/pseudo_facebook.tsv
+
 Intro_to_Data_Analysis/Lesson1/daily_engagement.csv
 Intro_to_Data_Analysis/Lesson1/enrollments.csv
 Intro_to_Data_Analysis/Lesson1/project_submissions.csv
@@ -16,3 +18,5 @@ Intro_to_Data_Analysis/Lesson2/table_descriptions.txt
 Intro_to_Data_Analysis/Lesson2/employment_above_15.csv
 Intro_to_Data_Analysis/Lesson2/female_completion_rate.csv
 Intro_to_Data_Analysis/Lesson2/gdp_per_capita.csv
+Intro_to_Data_Analysis/Lesson3/nyc_subway_weather_descriptions.pdf
+Intro_to_Data_Analysis/Lesson3/nyc_subway_weather.csv
