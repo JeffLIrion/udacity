@@ -271,6 +271,21 @@ Full-Width Styles
   margin: 0 auto;
 }
 
+#home_banner {
+  display: block;
+  position: absolute;
+  top:0;
+  left: 0px;
+  z-index: 10;
+  padding: 10px 10px 10px 40px;
+  color: #fff;
+  background: url('../images/icon_back.png') #0090ff no-repeat 2.5% 50%;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(0,0,0,.5);
+  border-bottom-left-radius: 2px;
+  border-bottom-right-radius: 2px;
+}
+
 #forkme_banner {
   display: block;
   position: absolute;
