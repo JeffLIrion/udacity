@@ -5,6 +5,8 @@ README.md~
 *.ipynb_checkpoints
 
 Data_Analysis_with_R/pseudo_facebook.tsv
+Data_Analysis_with_R/indicator_sugar_consumption.xlsx
+Data_Analysis_with_R/birthdaysExample.csv
 
 Data_Wrangling_with_MongoDB/data/
 

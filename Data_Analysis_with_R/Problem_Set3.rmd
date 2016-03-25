@@ -1,0 +1,246 @@
+---
+title: "Data Analysis with R: Problem Set 3"
+author: "Jeff Irion"
+date: "March 24, 2016"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, include=FALSE}
+rm(list=ls())
+setwd("C:/Users/Jeff/udacity/Data_Analysis_with_R/")
+```
+
+
+
+### 1. Diamonds
+
+```{r}
+library(ggplot2)
+data(diamonds)
+
+# observations, variables, number of ordered factors
+str(diamonds)
+
+levels(diamonds$color)
+
+# also see:
+#?diamonds
+```
+
+
+
+### 2. Price Histogram
+
+```{r}
+# Create a histogram of the price of
+# all the diamonds in the diamond data set.
+
+# TYPE YOUR CODE BELOW THE LINE
+# =======================================
+hist(diamonds$price)
+```
+
+
+
+### 3. Price Histogram Summary
+
+```{r}
+summary(diamonds$price)
+```
+
+
+
+### 4. Diamond Counts
+
+```{r}
+# diamonds under $500
+sum(diamonds$price < 500)
+
+# diamonds under $250
+sum(diamonds$price < 250)
+
+# diamonds that cost $15,000 or more
+sum(diamonds$price >= 15000)
+```
+
+
+
+### 5. Cheaper Diamonds
+
+```{r}
+# Explore the largest peak in the
+# price histogram you created earlier.
+
+# Try limiting the x-axis, altering the bin width,
+# and setting different breaks on the x-axis.
+
+# There won't be a solution video for this
+# question so go to the discussions to
+# share your thoughts and discover
+# what other people find.
+
+# You can save images by using the ggsave() command.
+# ggsave() will save the last plot created.
+# For example...
+#                  qplot(x = price, data = diamonds)
+#                  ggsave('priceHistogram.png')
+
+# ggsave currently recognises the extensions eps/ps, tex (pictex),
+# pdf, jpeg, tiff, png, bmp, svg and wmf (windows only).
+
+# Submit your final code when you are ready.
+
+# TYPE YOUR CODE BELOW THE LINE
+# ======================================================================
+ggplot(diamonds, aes(x=price)) + geom_histogram(binwidth=500) + scale_x_continuous(limits=c(5250,14750))
+```
+
+
+
+### 6. Price by Cut Histograms
+
+```{r}
+# Break out the histogram of diamond prices by cut.
+
+# You should have five histograms in separate
+# panels on your resulting plot.
+
+# TYPE YOUR CODE BELOW THE LINE
+# ======================================================
+ggplot(diamonds, aes(x=price)) + geom_histogram() + facet_wrap(~cut)
+```
+
+
+
+### 7. Price by Cut
+
+```{r}
+by(diamonds$price, diamonds$cut, summary, digits=max(getOption('digits')))
+```
+
+
+
+### 8. Scales and Multiple Histograms
+
+```{r}
+ggplot(diamonds, aes(x=price)) + geom_histogram() + facet_wrap(~cut, scales="free")
+```
+
+
+
+### 9. Price per Carat by Cut
+
+```{r}
+# Create a histogram of price per carat
+# and facet it by cut. You can make adjustments
+# to the code from the previous exercise to get
+# started.
+
+# Adjust the bin width and transform the scale
+# of the x-axis using log10.
+
+# Submit your final code when you are ready.
+
+# ENTER YOUR CODE BELOW THIS LINE.
+# ===========================================================================
+ggplot(diamonds, aes(x=price)) + geom_histogram() + facet_wrap(~cut, scales="free") + scale_x_log10()
+```
+
+
+
+### 10. Price Box Plots
+
+```{r}
+# Investigate the price of diamonds using box plots,
+# numerical summaries, and one of the following categorical
+# variables: cut, clarity, or color.
+ggplot(diamonds, aes(x=clarity, y=price)) + geom_boxplot() + xlab('Clarity') + ylab('Price')
+by(diamonds$price, diamonds$color, summary)
+```
+
+
+
+### 11. Interquartile Range (IQR)
+
+```{r}
+# IQR for the best color
+IQR(diamonds$price[diamonds$color=='D'])
+
+# IQR for the worst color
+IQR(diamonds$price[diamonds$color=='J'])
+```
+
+
+
+### 12. Price per Carat Box Plots by Color
+
+```{r}
+ggplot(diamonds, aes(x=color, y=price)) + geom_boxplot() + xlab('Color') + ylab('Price')
+by(diamonds$price, diamonds$color, summary)
+```
+
+
+
+### 13. Carat Frequency Polygon
+
+```{r}
+qplot(data=diamonds, x=carat, xlab='Carat', ylab='Frequency', binwidth=0.1, geom='freqpoly') + scale_x_continuous(breaks=seq(0,5,0.2)) + scale_y_continuous(breaks=seq(0,12000,2000))
+```
+
+
+
+### 14. Gapminder Data
+
+```{r}
+# The Gapminder website contains over 500 data sets with information about
+# the world's population. Your task is to download a data set of your choice
+# and create 2-5 plots that make use of the techniques from Lesson 3.
+
+# You might use a simple histogram, a boxplot split over a categorical variable,
+# or a frequency polygon. The choice is yours!
+
+# You can find a link to the Gapminder website in the Instructor Notes.
+
+# Once you've completed your investigation, create a post in the discussions that includes:
+#       1. any questions you answered, your observations, and summary statistics
+#       2. snippets of code that created the plots
+#       3. links to the images of your plots
+
+# You can save images by using the ggsave() command.
+# ggsave() will save the last plot created.
+# For example...
+#                  qplot(x = price, data = diamonds)
+#                  ggsave('priceHistogram.png')
+
+# ggsave currently recognises the extensions eps/ps, tex (pictex),
+# pdf, jpeg, tiff, png, bmp, svg and wmf (windows only).
+
+# Copy and paste all of the code that you used for
+# your investigation, and submit it when you are ready.
+# ====================================================================================
+library('xlsx', quietly=TRUE)
+sugar <- read.xlsx('indicator_sugar_consumption.xlsx', sheetIndex=1)
+
+# get rid of NA rows and columns
+sugar[ncol(sugar)] <- NULL
+sugar <- sugar[!is.na(sugar[[1]]),]
+
+# clean up the country column
+colnames(sugar)[1] <- 'country'
+sugar$country <- gsub(' ','_',sugar$country)
+
+# the countries and years
+countries <- as.character(sugar$country)
+years <- seq(1961,2004)
+
+# transpose the dataframe
+sugar2 <- as.data.frame(t(sugar[,-1]))
+colnames(sugar2) <- countries
+sugar2['year'] <- years
+
+
+ggplot(sugar2, aes(x=year, y=United_States)) + geom_line() + xlab('Year') + ylab('Sugar per Person (g per day)') + ggtitle('Sugar Consumption in the United States')
+ggplot(sugar, aes(x=X2004)) + geom_histogram() + xlab('Sugar per Person (g per day)') + ylab('Count') + ggtitle('Sugar Consumption per Person by Country in 2004')
+```
