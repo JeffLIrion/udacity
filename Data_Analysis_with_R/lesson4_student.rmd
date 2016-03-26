@@ -1,0 +1,352 @@
+Lesson 4
+========================================================
+```{r, include=FALSE}
+setwd('C:/Users/Jeff/udacity/Data_Analysis_with_R')
+```
+
+***
+
+### Scatterplots and Perceived Audience Size
+Notes:
+
+***
+
+### Scatterplots
+Notes:
+
+```{r Scatterplots}
+library(ggplot2)
+pf <- read.csv('pseudo_facebook.tsv', sep='\t')
+
+qplot(data=pf, x=age, y=friend_count)
+```
+
+***
+
+#### What are some things that you notice right away?
+Response:
+
+***
+
+### ggplot Syntax
+Notes:
+
+```{r ggplot Syntax}
+ggplot(pf, aes(x=age, y=friend_count)) + geom_point() + xlim(13,90)
+
+summary(pf$age)
+```
+
+***
+
+### Overplotting
+Notes:
+
+```{r Overplotting}
+ggplot(pf, aes(x=age, y=friend_count)) + geom_jitter(alpha=1/20) + xlim(13,90)
+```
+
+#### What do you notice in the plot?
+Response:
+
+***
+
+### Coord_trans()
+Notes:
+
+#### Look up the documentation for coord_trans() and add a layer to the plot that transforms friend_count using the square root function. Create your plot!
+
+```{r Coord_trans()}
+ggplot(pf, aes(x=age, y=friend_count)) + xlab('Age') + ylab('Friend Count') + 
+  geom_point(alpha=1/20, position = position_jitter(h=0)) + 
+  xlim(13,90) + coord_trans(y='sqrt')
+```
+
+
+#### What do you notice?
+
+***
+
+### Alpha and Jitter
+Notes:
+
+```{r Alpha and Jitter}
+ggplot(pf, aes(x=age, y=friendships_initiated)) + xlab('Age') + ylab('Friendships Initiated') + 
+  geom_point(alpha=1/20, position = position_jitter(h=0)) + xlim(13,90) + coord_trans(y='sqrt')
+```
+
+***
+
+### Overplotting and Domain Knowledge
+Notes:
+
+***
+
+### Conditional Means
+Notes:
+
+```{r Conditional Means}
+library(dplyr)
+
+# method 1
+age_groups <- group_by(pf, age)
+pf.fc_by_age <- summarise(age_groups, 
+                          friend_count_mean = mean(friend_count), 
+                          friend_count_median = median(friend_count), 
+                          n=n()) 
+pf.fc_by_age <- arrange(pf.fc_by_age, age)
+
+# method 2
+pf.fc_by_age <- pf %>% group_by(age) %>%
+  summarise(friend_count_mean = mean(friend_count),
+            friend_count_median = median(friend_count),
+            n = n()) %>%
+  arrange(age)
+
+head(pf.fc_by_age)
+```
+
+Create your plot!
+
+```{r Conditional Means Plot}
+# Plot mean friend count vs. age using a line graph.
+# Be sure you use the correct variable names
+# and the correct data frame. You should be working
+# with the new data frame created from the dplyr
+# functions. The data frame is called 'pf.fc_by_age'.
+ggplot(pf.fc_by_age, aes(x=age, y=friend_count_mean)) + geom_line()
+```
+
+***
+
+### Overlaying Summaries with Raw Data
+Notes:
+
+```{r Overlaying Summaries with Raw Data}
+ggplot(pf, aes(x=age, y=friend_count)) + xlab('Age') + ylab('Friend Count') + 
+  geom_point(alpha=1/20, position = position_jitter(h=0), color='orange') + 
+  xlim(13,90) + 
+  coord_trans(y='sqrt') + 
+  geom_line(stat='summary', fun.y=mean) +
+  geom_line(stat ='summary', fun.y=quantile, fun.args=list(probs=0.1), linetype=2, color='blue') + 
+  geom_line(stat ='summary', fun.y=quantile, fun.args=list(probs=0.9), linetype=2, color='blue') +
+  geom_line(stat ='summary', fun.y=median, color='blue')
+
+ggplot(pf, aes(x=age, y=friend_count)) + xlab('Age') + ylab('Friend Count') + 
+  geom_point(alpha=1/20, position = position_jitter(h=0), color='orange') + 
+  xlim(13,90) + 
+  coord_cartesian(xlim = c(13,70), ylim = c(0,1000)) + 
+  geom_line(stat='summary', fun.y=mean) +
+  geom_line(stat ='summary', fun.y=quantile, fun.args=list(probs=0.1), linetype=2, color='blue') + 
+  geom_line(stat ='summary', fun.y=quantile, fun.args=list(probs=0.9), linetype=2, color='blue') +
+  geom_line(stat ='summary', fun.y=median, color='blue')
+```
+
+#### What are some of your observations of the plot?
+Response:
+
+***
+
+### Moira: Histogram Summary and Scatterplot
+See the Instructor Notes of this video to download Moira's paper on perceived audience size and to see the final plot.
+
+Notes:
+
+***
+
+### Correlation
+Notes:
+
+```{r Correlation}
+# rule of thumb:
+#   |correlation| > 0.3 is meaningful but small
+#   |correlation| > 0.5 is moderate
+#   |correlation| > 0.7 is pretty large
+cor.test(pf$age, pf$friend_count, method='pearson')
+
+# equivalent code
+with(pf, cor.test(age, friend_count, method='pearson'))
+```
+
+Look up the documentation for the cor.test function.
+
+What's the correlation between age and friend count? Round to three decimal places.
+Response:
+
+***
+
+### Correlation on Subsets
+Notes:
+
+```{r Correlation on Subsets}
+with(subset(pf,age <= 70), cor.test(age, friend_count))
+```
+
+***
+
+### Correlation Methods
+Notes:
+
+***
+
+## Create Scatterplots
+Notes:
+
+```{r}
+ggplot(pf, aes(x=www_likes_received, y=likes_received)) + geom_point(alpha=0.1, position=position_jitter(h=0)) + scale_x_log10() + scale_y_log10()
+```
+
+***
+
+### Strong Correlations
+Notes:
+
+```{r Strong Correlations}
+ggplot(pf, aes(x=www_likes_received, y=likes_received)) + 
+  geom_point(alpha=0.1, position=position_jitter(h=0)) + 
+  xlim(0, quantile(pf$www_likes_received, 0.95)) +
+  ylim(0, quantile(pf$likes_received, 0.95)) +
+  geom_smooth(method='lm', color='red')
+```
+
+What's the correlation betwen the two variables? Include the top 5% of values for the variable in the calculation and round to 3 decimal places.
+
+```{r Correlation Calcuation}
+cor.test(pf$www_likes_received, pf$likes_received)
+```
+
+Response:
+
+***
+
+### Moira on Correlation
+Notes:
+
+***
+
+### More Caution with Correlation
+Notes:
+
+```{r More Caution With Correlation}
+library(alr3)
+data(Mitchell)
+```
+
+Create your plot!
+
+```{r Temp vs Month}
+ggplot(Mitchell, aes(x=Month, y=Temp)) + geom_point()
+```
+
+***
+
+### Noisy Scatterplots
+a. Take a guess for the correlation coefficient for the scatterplot.
+
+b. What is the actual correlation of the two variables?
+(Round to the thousandths place)
+
+```{r Noisy Scatterplots}
+with(Mitchell, cor.test(Temp,Month))
+```
+
+***
+
+### Making Sense of Data
+Notes:
+
+```{r Making Sense of Data}
+ggplot(Mitchell, aes(x=Month, y=Temp)) + 
+  geom_point() +
+  scale_x_discrete(breaks=seq(0,203,12))
+```
+
+***
+
+### A New Perspective
+
+What do you notice?
+Response:
+
+Watch the solution video and check out the Instructor Notes!
+Notes:
+
+***
+
+### Understanding Noise: Age to Age Months
+Notes:
+
+```{r Understanding Noise: Age to Age Months}
+names(pf)
+head(pf)
+pf$age_with_months <- pf$age + pf$dob_month/12
+```
+
+***
+
+### Age with Months Means
+
+Programming Assignment
+```{r Programming Assignment}
+# Create a new data frame called
+# pf.fc_by_age_months that contains
+# the mean friend count, the median friend
+# count, and the number of users in each
+# group of age_with_months. The rows of the
+# data framed should be arranged in increasing
+# order by the age_with_months variable.
+
+# For example, the first two rows of the resulting
+# data frame would look something like...
+
+# age_with_months  friend_count_mean	friend_count_median	n
+#              13            275.0000                   275 2
+#        13.25000            133.2000                   101 11
+
+pf.fc_by_age_months <- group_by(pf, age_with_months) %>%
+  summarise( friend_count_mean=mean(friend_count),
+             friend_count_median=median(friend_count),
+             n=n()) %>%
+  arrange(age_with_months)
+?arrange
+```
+
+***
+
+### Noise in Conditional Means
+
+```{r Noise in Conditional Means}
+ggplot(subset(pf.fc_by_age_months, age_with_months<71), aes(x=age_with_months, y=friend_count_mean)) + geom_line()
+```
+
+***
+
+### Smoothing Conditional Means
+Notes:
+
+```{r Smoothing Conditional Means}
+p1 <- ggplot(subset(pf.fc_by_age, age<71), aes(x=age, y=friend_count_mean)) + geom_line() + geom_smooth()
+
+p2 <- ggplot(subset(pf.fc_by_age_months, age_with_months<71), aes(x=age_with_months, y=friend_count_mean)) + geom_line() + geom_smooth()
+
+p3 <- ggplot(subset(pf.fc_by_age, age<71), aes(x=round(age/5)*5, y=friend_count_mean)) + geom_line(stat='summary', fun.y=mean)
+
+library(gridExtra)
+grid.arrange(p2,p1,p3,ncol=1)
+```
+
+***
+
+### Which Plot to Choose?
+Notes:
+
+***
+
+### Analyzing Two Variables
+Reflection:
+
+***
+
+Click **KnitHTML** to see all of your hard work and to have an html
+page of this lesson, your answers, and your notes!
+
