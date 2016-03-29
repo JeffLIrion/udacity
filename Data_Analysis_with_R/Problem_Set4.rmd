@@ -197,4 +197,53 @@ grid.arrange(p1,p2,ncol=1)
 # In your investigation, examine pairs of variable and create 2-5 plots that make
 # use of the techniques from Lesson 4.
 
+# You can find a link to the Gapminder website in the Instructor Notes.
+
+# Once you've completed your investigation, create a post in the discussions that includes:
+#       1. the variable(s) you investigated, your observations, and any summary statistics
+#       2. snippets of code that created the plots
+#       3. links to the images of your plots
+
+# Copy and paste all of the code that you used for
+# your investigation, and submit it when you are ready.
+# ====================================================================
+library('xlsx', quietly=TRUE)
+library(reshape2)
+
+sugar <- read.xlsx('indicator_sugar_consumption.xlsx', sheetIndex=1)
+
+# get rid of NA rows and columns
+sugar[ncol(sugar)] <- NULL
+sugar <- sugar[!is.na(sugar[[1]]),]
+
+# clean up the country column
+colnames(sugar)[1] <- 'country'
+sugar$country <- gsub(' ','_',sugar$country)
+
+# the countries and years
+countries <- as.character(sugar$country)
+years <- seq(1961,2004)
+
+# transpose the dataframe
+sugar2 <- as.data.frame(t(sugar[,-1]))
+colnames(sugar2) <- countries
+sugar2['year'] <- years
+
+
+# sugar per person vs. year in the US
+ggplot(sugar2, aes(x=year, y=United_States)) + geom_line() + xlab('Year') + ylab('Sugar per Person (g per day)') + ggtitle('Sugar Consumption in the United States')
+
+
+# sugar per person vs. year for all countries
+sugar3 <- melt(sugar2, id.vars='year', na.rm=TRUE, variable.name='country')
+colnames(sugar3)[3] <- 'amount'
+ggplot(sugar3, aes(x=year, y=amount)) + 
+  geom_point(alpha=1/3, position = position_jitter(h=0), color='orange') + 
+  geom_line(stat='summary', fun.y=mean) +
+  geom_line(stat ='summary', fun.y=quantile, fun.args=list(probs=0.1), linetype=2, color='blue') + 
+  geom_line(stat ='summary', fun.y=quantile, fun.args=list(probs=0.9), linetype=2, color='blue') +
+  geom_line(stat ='summary', fun.y=median, color='blue') + 
+  xlab('Year') + 
+  ylab('Sugar per Person (g per day)') +
+  ggtitle('Sugar Consumption Worldwide from 1961-2004')
 ```

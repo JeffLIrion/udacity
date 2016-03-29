@@ -221,6 +221,8 @@ qplot(data=diamonds, x=carat, xlab='Carat', ylab='Frequency', binwidth=0.1, geom
 # your investigation, and submit it when you are ready.
 # ====================================================================================
 library('xlsx', quietly=TRUE)
+library(reshape2)
+
 sugar <- read.xlsx('indicator_sugar_consumption.xlsx', sheetIndex=1)
 
 # get rid of NA rows and columns
@@ -235,14 +237,15 @@ sugar$country <- gsub(' ','_',sugar$country)
 countries <- as.character(sugar$country)
 years <- seq(1961,2004)
 
-# transpose the dataframe
-sugar2 <- as.data.frame(t(sugar[,-1]))
-colnames(sugar2) <- countries
-sugar2['year'] <- years
 
-
-ggplot(sugar2, aes(x=year, y=United_States)) + geom_line() + xlab('Year') + ylab('Sugar per Person (g per day)') + ggtitle('Sugar Consumption in the United States')
+# sugar consumption in 2004 histogram
 ggplot(sugar, aes(x=X2004)) + geom_histogram() + xlab('Sugar per Person (g per day)') + ylab('Count') + ggtitle('Sugar Consumption per Person by Country in 2004')
+
+
+# sugar consumption in 1970 vs. 1980 vs. 1990 vs. 2000 boxplot
+sugar2 <- melt(sugar, id.vars='country', measure.vars=c('X1970','X1980','X1990','X2000'), na.rm=TRUE, variable.name='year')
+sugar2$year <- gsub('X','',sugar2$year)
+ggplot(sugar2, aes(x=year, y=value)) + geom_boxplot() + xlab('Year') + ylab('Sugar per Person (g per day)') + ggtitle('Sugar Consumption Worldwide by Decade')
 ```
 
 
