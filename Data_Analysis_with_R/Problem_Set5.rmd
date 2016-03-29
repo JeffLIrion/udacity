@@ -1,0 +1,366 @@
+---
+title: "Data Analysis with R: Problem Set 5"
+author: "Jeff Irion"
+date: "March 29, 2016"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, include=FALSE}
+rm(list=ls())
+setwd("C:/Users/Jeff/udacity/Data_Analysis_with_R/")
+```
+
+
+
+### 1. Price Histograms with Facet and Color
+
+```{r}
+library(ggplot2)
+data(diamonds)
+
+# Create a histogram of diamond prices.
+# Facet the histogram by diamond color
+# and use cut to color the histogram bars.
+
+# The plot should look something like this.
+# http://i.imgur.com/b5xyrOu.jpg
+
+# Note: In the link, a color palette of type
+# 'qual' was used to color the histogram using
+# scale_fill_brewer(type = 'qual')
+
+# This assignment is not graded and
+# will be marked as correct when you submit.
+
+# ENTER YOUR CODE BELOW THIS LINE
+# ===========================================
+
+ggplot(diamonds, aes(x=price, fill=cut)) + 
+  geom_histogram(bins=50) + 
+  scale_fill_brewer(type = 'qual') +
+  facet_wrap(~color)
+```
+
+
+
+### 2. Price vs. Table Colored by Cut
+
+```{r}
+# Create a scatterplot of diamond price vs.
+# table and color the points by the cut of
+# the diamond.
+
+# The plot should look something like this.
+# http://i.imgur.com/rQF9jQr.jpg
+
+# Note: In the link, a color palette of type
+# 'qual' was used to color the scatterplot using
+# scale_color_brewer(type = 'qual')
+
+# This assignment is not graded and
+# will be marked as correct when you submit.
+
+# ENTER YOUR CODE BELOW THIS LINE
+# ===========================================
+ggplot(diamonds, aes(x=table, y=price, color=cut)) + 
+  geom_point(position=position_jitter(), alpha=0.25) +
+  scale_color_brewer(type='qual')
+```
+
+
+
+### 4. Price vs. Volume and Diamond Clarity
+
+```{r}
+# Create a scatterplot of diamond price vs.
+# volume (x * y * z) and color the points by
+# the clarity of diamonds. Use scale on the y-axis
+# to take the log10 of price. You should also
+# omit the top 1% of diamond volumes from the plot.
+
+# Note: Volume is a very rough approximation of
+# a diamond's actual volume.
+
+# The plot should look something like this.
+# http://i.imgur.com/excUpea.jpg
+
+# Note: In the link, a color palette of type
+# 'div' was used to color the scatterplot using
+# scale_color_brewer(type = 'div')
+
+# This assignment is not graded and
+# will be marked as correct when you submit.
+
+# ENTER YOUR CODE BELOW THIS LINE
+# ===========================================
+diamonds$volume <- with(diamonds, x*y*z)
+ggplot(subset(diamonds, volume < quantile(volume, 0.99)), aes(volume, y=price, color=clarity)) +
+  geom_point(alpha=0.25) +
+  scale_color_brewer(type='div') +
+  scale_y_log10()
+```
+
+
+
+### 5. Proportion of Friendships Initiated
+
+```{r}
+# Many interesting variables are derived from two or more others.
+# For example, we might wonder how much of a person's network on
+# a service like Facebook the user actively initiated. Two users
+# with the same degree (or number of friends) might be very
+# different if one initiated most of those connections on the
+# service, while the other initiated very few. So it could be
+# useful to consider this proportion of existing friendships that
+# the user initiated. This might be a good predictor of how active
+# a user is compared with their peers, or other traits, such as
+# personality (i.e., is this person an extrovert?).
+
+# Your task is to create a new variable called 'prop_initiated'
+# in the Pseudo-Facebook data set. The variable should contain
+# the proportion of friendships that the user initiated.
+
+# This programming assignment WILL BE automatically graded.
+
+# DO NOT DELETE THIS NEXT LINE OF CODE
+# ========================================================================
+pf <- read.delim('pseudo_facebook.tsv')
+
+# ENTER YOUR CODE BELOW THIS LINE
+# ========================================================================
+
+pf$prop_initiated <- pf$friendships_initiated / ifelse(pf$friend_count>0, pf$friend_count, 1)
+```
+
+
+
+### 6. prop_initiated vs. tenure
+
+```{r}
+# Create a line graph of the median proportion of
+# friendships initiated ('prop_initiated') vs.
+# tenure and color the line segment by
+# year_joined.bucket.
+
+# Recall, we created year_joined.bucket in Lesson 5
+# by first creating year_joined from the variable tenure.
+# Then, we used the cut function on year_joined to create
+# four bins or cohorts of users.
+
+# (2004, 2009]
+# (2009, 2011]
+# (2011, 2012]
+# (2012, 2014]
+
+# The plot should look something like this.
+# http://i.imgur.com/vNjPtDh.jpg
+# OR this
+# http://i.imgur.com/IBN1ufQ.jpg
+
+# This assignment is not graded and
+# will be marked as correct when you submit.
+
+# ENTER YOUR CODE BELOW THIS LINE
+# ===========================================================
+
+pf$year_joined <- 2014-ceiling(pf$tenure/365)
+pf$year_joined.bucket <- cut(pf$year_joined, breaks=c(2004,2009,2011,2012,2014), right=TRUE)
+
+ggplot(pf, aes(x=tenure, y=prop_initiated, color=year_joined.bucket)) +
+  geom_line(stat='summary', fun.y=median, na.rm=TRUE)
+```
+
+
+
+### 7. Smoothing prop_initiated vs. tenure
+
+```{r}
+# Smooth the last plot you created of
+# of prop_initiated vs tenure colored by
+# year_joined.bucket. You can bin together ranges
+# of tenure or add a smoother to the plot.
+
+# There won't be a solution image for this exercise.
+# You will answer some questions about your plot in
+# the next two exercises.
+
+# This assignment is not graded and
+# will be marked as correct when you submit.
+
+# ENTER YOUR CODE BELOW THIS LINE
+# ====================================================
+
+ggplot(pf, aes(x=25*round(tenure/25), y=prop_initiated, color=year_joined.bucket)) +
+  geom_line(stat='summary', fun.y=median, na.rm=TRUE)
+
+ggplot(pf, aes(x=tenure, y=prop_initiated, color=year_joined.bucket)) +
+  geom_smooth(na.rm=TRUE)
+```
+
+
+
+### 9. Largest Group Mean prop_initiated
+
+```{r}
+mean(pf$prop_initiated[pf$year_joined.bucket=='(2012,2014]'], na.rm=TRUE)
+```
+
+
+
+### 10. Price/Carat Binned, Faceted, & Colored
+
+```{r}
+# Create a scatter plot of the price/carat ratio
+# of diamonds. The variable x should be
+# assigned to cut. The points should be colored
+# by diamond color, and the plot should be
+# faceted by clarity.
+
+# The plot should look something like this.
+# http://i.imgur.com/YzbWkHT.jpg.
+
+# Note: In the link, a color palette of type
+# 'div' was used to color the histogram using
+# scale_color_brewer(type = 'div')
+
+# This assignment is not graded and
+# will be marked as correct when you submit.
+
+# ENTER YOUR CODE BELOW THIS LINE
+# ===========================================
+ggplot(diamonds, aes(x=cut, y=price/carat, color=color)) +
+  geom_point(position=position_jitter(), alpha=0.33) + 
+  facet_wrap(~clarity) +
+  scale_color_brewer(type='div')
+```
+
+
+
+### 11. Gapminder Multivariate Analysis
+
+```{r}
+# The Gapminder website contains over 500 data sets with information about
+# the world's population. Your task is to continue the investigation you did at the
+# end of Problem Set 4 or you can start fresh and choose a different
+# data set from Gapminder.
+
+# If you're feeling adventurous or want to try some data munging see if you can
+# find a data set or scrape one from the web.
+
+# In your investigation, examine 3 or more variables and create 2-5 plots that make
+# use of the techniques from Lesson 5.
+
+# You can find a link to the Gapminder website in the Instructor Notes.
+
+# Once you've completed your investigation, create a post in the discussions that includes:
+#       1. the variable(s) you investigated, your observations, and any summary statistics
+#       2. snippets of code that created the plots
+#       3. links to the images of your plots
+
+# Copy and paste all of the code that you used for
+# your investigation, and submit it when you are ready.
+# ============================================================================================
+
+### from Problem Set 3
+library('xlsx', quietly=TRUE)
+library(reshape2)
+library(dplyr, quietly=TRUE)
+
+sugar <- read.xlsx('indicator_sugar_consumption.xlsx', sheetIndex=1)
+bmi <- read.xlsx('Indicator_BMI_male_ASM.xlsx', sheetIndex=1)
+bp <- read.xlsx('Indicator_SBP_male_ASM.xlsx', sheetIndex=1)
+```
+
+```{r}
+df_countries <- function(df){
+  # clean up the country column
+  colnames(df)[1] <- 'country'
+  df$country <- gsub(' ','_',df$country)
+  df$country <- gsub(',','',df$country)
+  ###rownames(df) <- df$country
+  return(df)
+}
+
+countries <- function(df){
+  countries_list <- as.character(df$country)
+}
+  
+years <- function(df){
+  years_list <- as.numeric(gsub('X','',colnames(df)[-1]))
+}
+```
+
+```{r Process SUGAR}
+# get rid of NA rows and columns
+sugar[ncol(sugar)] <- NULL
+sugar <- sugar[!is.na(sugar[[1]]),]
+
+sugar <- df_countries(sugar)
+sugar_countries <- countries(sugar)
+sugar_years <- years(sugar)
+```
+
+```{r Process BMI}
+bmi <- df_countries(bmi)
+bmi_countries <- countries(bmi)
+bmi_years <- years(bmi)
+```
+
+```{r Process BP}
+bp <- df_countries(bp)
+bp_countries <- countries(bp)
+bp_years <- years(bp)
+```
+
+```{r}
+# scatter plot of bp vs. sugar for 2004, colored via bmi (cut into groups)
+sugar2004 <- sugar[,c('country','X2004')]
+colnames(sugar2004)[2] <- 'sugar'
+
+bp2004 <- bp[,c('country','X2004')]
+colnames(bp2004)[2] <- 'bp'
+
+bmi2004 <- bmi[,c('country','X2004')]
+colnames(bmi2004)[2] <- 'bmi'
+
+df2004 <- merge(sugar2004, bp2004, by='country', all=FALSE) %>% merge(bmi2004, by='country', all=FALSE)
+df2004$bmi_groups <- cut(df2004$bmi, breaks=5)
+
+ggplot(df2004, aes(x=sugar, y=bp, color=bmi_groups, size=bmi)) + 
+  geom_point() +
+  xlab('Sugar (g per Person per Day)') +
+  ylab('Blood Pressure') +
+  ggtitle('The Relationship Between Sugar Consumption, Blood Pressure, and BMI in 2004')
+```
+
+```{r}
+# line plot of the median bmi (over all countries) vs. time
+bmi2 <- melt(bmi, id.vars='country', na.rm=TRUE, variable.name='year')
+bmi2$year <- as.numeric(gsub('X','',bmi2$year))
+
+ggplot(bmi2, aes(x=year, y=value)) + 
+  geom_line(stat='summary', fun.y=median) +
+  xlab('Year') +
+  ylab('Median BMI') +
+  ggtitle('Worldwide Median BMI from 1980-2008')
+```
+
+```{r}
+# line plots of bp vs. year for a random sample of countries
+bp2 <- melt(bp, id.vars='country', na.rm=TRUE, variable.name='year')
+bp2$year <- as.numeric(gsub('X','',bp2$year))
+bp2$country <- factor(bp2$country)
+
+set.seed(1)
+random_countries <- sample( levels(bp2$country), 16)
+
+ggplot(subset(bp2, country %in% random_countries), aes(x=year, y=value)) +
+  facet_wrap(~country) + 
+  geom_line() + 
+  geom_point() +
+  xlab('Year') +
+  ylab('Blood Pressure') +
+  ggtitle('Blood Pressure from 1980-2008')
+```
