@@ -28,8 +28,8 @@ def mapper():
     for line in reader:
 
         # YOUR CODE HERE
-            
-        writer.writerow(line)
+        if ('.' not in line[4][:-1] and '!' not in line[4][:-1] and '?' not in line[4][:-1]):
+            writer.writerow(line)
 
 
 

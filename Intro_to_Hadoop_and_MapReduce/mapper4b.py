@@ -11,11 +11,19 @@ import csv
 def mapper():
     reader = csv.reader(sys.stdin, delimiter='\t')
     writer = csv.writer(sys.stdout, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
+    
+    # simple approach: use a list to store the posts, with 0 being the longest and 9 being the shortest
+    top10 = []
 
     for line in reader:
 
         # YOUR CODE HERE
-        
+        top10.append(line)
+        if len(top10) > 10:
+            top10.sort(key=lambda x: len(x[4]), reverse=True)
+            del top10[10]
+            
+    for line in reversed(top10):
         writer.writerow(line)
 
 
