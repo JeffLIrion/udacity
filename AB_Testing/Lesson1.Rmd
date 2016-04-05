@@ -1,0 +1,94 @@
+---
+title: "A/B Testing -- Lesson 1"
+author: "Jeff Irion"
+date: "April 5, 2016"
+output: 
+  html_document:
+    toc: true
+---
+
+```{r, include=FALSE}
+rm(list=ls())
+setwd("C:/Users/Jeff/udacity/AB_Testing/")
+```
+
+### Binomial Distribution
+
+Consider a binomial distribution with mean $p$.  If we sample that distribution $N$ times, the mean will be $p$ and the standard deviation will be $\sqrt{p(1-p)/N}$.  
+
+
+
+### Calculating a Confidence Interval
+
+```{r}
+# total users
+N <- 2000
+
+# clicks
+x <- 300
+
+# mean
+phat <- x/N
+
+# standard deviation
+s <- sqrt(phat*(1-phat)/N)
+
+# 99% confidence level ==> use p=0.995
+z <- qnorm(0.995)
+```
+
+The 99% confidence interval is (`r I(phat-s*z)`, `r I(phat+s*z)`).  
+
+
+
+### Calculating Number of Page Views Needed
+
+```{r}
+N <- 1000
+x <- 100
+dmin <- 0.02
+alpha <- 0.05
+beta <- 0.2
+
+# from http://www.evanmiller.org/ab-testing/sample-size.html
+num_subjects <- function(alpha, beta, p, delta){
+  z_alpha = qnorm(1-alpha/2)
+  z_beta = qnorm(1-beta)
+  
+  sd1 = sqrt(2*p*(1-p))
+  sd2 = sqrt(p*(1-p)+(p+delta)*(1-p-delta))
+  
+  return( (z_alpha * sd1 + z_beta * sd2)*(z_alpha * sd1 + z_beta * sd2)/delta^2 )
+}
+```
+
+Number of subjects needed: `r I(round(num_subjects(alpha, beta, x/N, dmin)))`
+
+
+
+### Calculating Results
+
+```{r}
+Ncont <- 10072
+xcont <- 974
+Nexp <- 9886
+xexp <- 1242
+
+ppool <- (974+1242)/(10072+9886)
+SEpool <- sqrt(ppool*(1-ppool)*(1/Ncont+1/Nexp))
+
+dmin <- 0.02
+alpha <- 0.05
+
+# estimated difference
+dhat <- xexp/Nexp-xcont/Ncont
+
+# margin of error
+m <- qnorm(.975)*SEpool
+```
+
+$\hat d$ = `r I(dhat)`
+
+$m$ = `r I(m)`
+
+Confidence interval = (`r I(dhat-m)`, `r I(dhat+m)`)
