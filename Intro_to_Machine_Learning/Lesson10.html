@@ -414,7 +414,7 @@ Hi Everyone  If you can read this message youre properly using parseOutText  Ple
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="kn">from</span> <span class="nn">nltk.stem.snowball</span> <span class="kn">import</span> <span class="n">SnowballStemmer</span>
 
-<span class="k">def</span> <span class="nf">parseOutText2</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">parseOutText</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Input: a file containing text</span>
 <span class="sd">    </span>
@@ -447,7 +447,7 @@ Hi Everyone  If you can read this message youre properly using parseOutText  Ple
     
 
 <span class="n">ff</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;../text_learning/test_email.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
-<span class="n">text</span> <span class="o">=</span> <span class="n">parseOutText2</span><span class="p">(</span><span class="n">ff</span><span class="p">)</span>
+<span class="n">text</span> <span class="o">=</span> <span class="n">parseOutText</span><span class="p">(</span><span class="n">ff</span><span class="p">)</span>
 <span class="k">print</span> <span class="n">text</span>
 </pre></div>
 
@@ -526,7 +526,7 @@ Hi Everyone  If you can read this message youre properly using parseOutText  Ple
 
                 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">email</span><span class="p">:</span>
                     <span class="c1">### use parseOutText to extract the text from the opened email</span>
-                    <span class="n">text</span> <span class="o">=</span> <span class="n">parseOutText2</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
+                    <span class="n">text</span> <span class="o">=</span> <span class="n">parseOutText</span><span class="p">(</span><span class="n">email</span><span class="p">)</span>
 
                     <span class="c1">### use str.replace() to remove any instances of the words</span>
                     <span class="c1">### [&quot;sara&quot;, &quot;shackleton &quot;, &quot;chris&quot;, &quot;germani&quot;]</span>
