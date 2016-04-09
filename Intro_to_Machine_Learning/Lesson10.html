@@ -540,6 +540,8 @@ Hi Everyone  If you can read this message youre properly using parseOutText  Ple
                     <span class="c1">### append a 0 to from_data if email is from Sara, and 1 if email is from Chris</span>
                     <span class="k">if</span> <span class="n">name</span><span class="o">==</span><span class="s1">&#39;sara&#39;</span><span class="p">:</span>
                         <span class="n">from_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">from_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span> <span class="n">word_data</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;your_word_data.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="p">)</span>
 <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span> <span class="n">from_data</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;your_email_authors.pkl&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="p">)</span>
