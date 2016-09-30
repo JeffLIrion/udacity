@@ -1,7 +1,7 @@
 # udacity
 This repo contains my work for Udacity courses.  
 
-gh-pages URL: [http://jefflirion.github.io/udacity/](http://jefflirion.github.io/udacity/)
+gh-pages URL: [https://jefflirion.github.io/udacity/](https://jefflirion.github.io/udacity/)
 
 Specific to **Intro to Hadoop and MapReduce**:
 
